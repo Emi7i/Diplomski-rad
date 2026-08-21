@@ -1,0 +1,6 @@
+Navigation-menu je file iz shadcn/ui, u prevodu downloadovan file.
+
+Razlika je sto nije importovan, vec kada pokrenemo `npx shadcn@latest add navigation-menu`
+on downloaduje fajl kako bi mi imali ceo taj kod i mogli lako da ga menjamo.
+
+Tehnicki component (ok mozda molekul, nez)

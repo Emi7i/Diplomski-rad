@@ -1,0 +1,123 @@
+/* ============================================
+   DESIGN PALETTE - Customize your app here
+   ============================================
+   Modify the values below to change the look
+   and feel of your entire application.
+   ============================================ */
+
+:root {
+  /* ============================================
+     COLOR PALETTE
+     ============================================ */
+  
+  /* Text Colors */
+  --color-text: #6b6375;           /* Main text color */
+  --color-text-heading: #08060d;   /* Heading text color */
+  
+  /* Background Colors */
+  --color-background: #fff;        /* Main background color */
+  --color-code-bg: #f4f3ec;        /* Code block background */
+  
+  /* Border & UI Elements */
+  --color-border: #e5e4e7;          /* Border color */
+  
+  /* Accent Colors (primary brand color) */
+  --color-accent: #aa3bff;          /* Main accent color */
+  --color-accent-bg: rgba(170, 59, 255, 0.1);  /* Accent background (transparent) */
+  --color-accent-border: rgba(170, 59, 255, 0.5);  /* Accent border (transparent) */
+  
+  /* Social/Interactive Elements */
+  --color-social-bg: rgba(244, 243, 236, 0.5);  /* Social button background */
+  
+  /* Shadows */
+  --color-shadow: rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+
+  /* ============================================
+     TYPOGRAPHY - FONTS
+     ============================================ */
+  
+  --font-sans: system-ui, 'Segoe UI', Roboto, sans-serif;      /* Body text font */
+  --font-heading: system-ui, 'Segoe UI', Roboto, sans-serif;   /* Heading font */
+  --font-mono: ui-monospace, Consolas, monospace;              /* Code/monospace font */
+
+  /* ============================================
+     TYPOGRAPHY - FONT SIZES
+     ============================================ */
+  
+  --font-size-base: 18px;           /* Base font size */
+  --font-size-base-mobile: 16px;    /* Base font size on mobile */
+  --font-size-h1: 56px;             /* H1 heading size */
+  --font-size-h1-mobile: 36px;      /* H1 heading size on mobile */
+  --font-size-h2: 24px;             /* H2 heading size */
+  --font-size-h2-mobile: 20px;      /* H2 heading size on mobile */
+  --font-size-code: 15px;           /* Code/inline code size */
+  --font-size-button: 16px;         /* Button text size */
+  --font-size-counter: 16px;        /* Counter text size */
+
+  /* ============================================
+     TYPOGRAPHY - LINE HEIGHTS
+     ============================================ */
+  
+  --line-height-base: 145%;         /* Base line height */
+  --line-height-heading: 118%;      /* Heading line height */
+  --line-height-code: 135%;         /* Code line height */
+
+  /* ============================================
+     TYPOGRAPHY - LETTER SPACING
+     ============================================ */
+  
+  --letter-spacing-base: 0.18px;    /* Base letter spacing */
+  --letter-spacing-h1: -1.68px;     /* H1 letter spacing */
+  --letter-spacing-h2: -0.24px;     /* H2 letter spacing */
+
+  /* ============================================
+     SPACING
+     ============================================ */
+  
+  --spacing-unit: 8px;              /* Base spacing unit */
+  --spacing-sm: 4px;                /* Small spacing */
+  --spacing-md: 16px;               /* Medium spacing */
+  --spacing-lg: 24px;               /* Large spacing */
+  --spacing-xl: 32px;               /* Extra large spacing */
+
+  /* ============================================
+     BORDER RADIUS
+     ============================================ */
+  
+  --radius-sm: 4px;                  /* Small border radius */
+  --radius-md: 5px;                  /* Medium border radius */
+  --radius-lg: 6px;                  /* Large border radius */
+}
+
+/* ============================================
+   DARK MODE THEME
+   ============================================
+   These colors override the light theme
+   when dark mode is active
+   ============================================ */
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Text Colors */
+    --color-text: #9ca3af;
+    --color-text-heading: #f3f4f6;
+    
+    /* Background Colors */
+    --color-background: #16171d;
+    --color-code-bg: #1f2028;
+    
+    /* Border & UI Elements */
+    --color-border: #2e303a;
+    
+    /* Accent Colors */
+    --color-accent: #c084fc;
+    --color-accent-bg: rgba(192, 132, 252, 0.15);
+    --color-accent-border: rgba(192, 132, 252, 0.5);
+    
+    /* Social/Interactive Elements */
+    --color-social-bg: rgba(47, 48, 58, 0.5);
+    
+    /* Shadows */
+    --color-shadow: rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
+  }
+}
