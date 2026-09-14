@@ -133,14 +133,3 @@ You can find this implementation in [authService.ts](frontend/src/features/auth/
 | `npm run build`| Type-check and build for production|
 | `npm run lint` | Run ESLint                         |
 | `npm run preview` | Preview production build locally |
-
-
-## Agents
-There is also a CLAUDE.md file. Claude will pick up this automatically. <br>
-If you're using a different AI coding tool, it likely won't pick up this by default. Please check what your AI tool uses.
-
-- **Gemini CLI** — add this to `.gemini/settings.json`:
-```json
-  { "context": { "fileName": ["CLAUDE.md", "GEMINI.md"] } }
-```
-- **Other tools** (Codex, Cursor, etc.) — check whether they support pointing at a custom context filename, or copy the relevant sections into the tool's expected file.
