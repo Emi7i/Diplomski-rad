@@ -132,4 +132,4 @@ You can find this implementation in [authService.ts](frontend/src/features/auth/
 | `npm run dev`  | Start Vite dev server              |
 | `npm run build`| Type-check and build for production|
 | `npm run lint` | Run ESLint                         |
-| `npm run preview` | Preview production build locally |
+| `npm run preview` | Preview production build locally |Stop 

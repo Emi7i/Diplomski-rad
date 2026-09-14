@@ -12,7 +12,7 @@ import { useAuthStore } from "@store/authStore";
 import { authService } from "@features/auth/services/authService";
 
 const navItems = [
-  { path: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { path: "/dashboard", label: "Pi Control", icon: LayoutDashboard },
 ];
 
 export default function Navbar() {
