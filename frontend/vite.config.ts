@@ -25,7 +25,6 @@ export default defineConfig(({ mode }) => {
         "@assets": path.resolve(import.meta.dirname, "./src/assets"),
         "@icons": path.resolve(import.meta.dirname, "./src/assets/icons"),
         "@images": path.resolve(import.meta.dirname, "./src/assets/images"),
-        "@store": path.resolve(import.meta.dirname, "./src/store"),
       },
     },
   };

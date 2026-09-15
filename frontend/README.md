@@ -1,6 +1,6 @@
 # Frontend
 
-A React + TypeScript + Vite frontend template.
+The web UI for the Pi Control Portal — one page showing the Pi's live video feed, a console, and quick-action buttons. Needs the `backend/` service running alongside it (see the root `.env.example` and `CLAUDE.md`).
 
 ## Technologies Used
 
@@ -8,14 +8,13 @@ A React + TypeScript + Vite frontend template.
 - **TypeScript** – type safety
 - **Vite** – build tool and dev server
 - **Tailwind CSS v4** – utility-first styling
-- **React Router v7** – client-side routing
-- **React Hook Form** – form handling
-- **Zod** – schema validation
+- **React Router v7** – single route (`/dashboard`)
 - **Axios** – HTTP client
-- **TanStack Query** – server-state management (caching, syncing)
-- **Zustand** – lightweight global state
+- **TanStack Query** – server-state management (fetches the command list)
+- **Radix UI + class-variance-authority + clsx + tailwind-merge** – shadcn/ui component primitives
 - **Lucide React** – icon library
-- **class-variance-authority + clsx + tailwind-merge** – component variant utilities
+- **`@xterm/xterm` + `@xterm/addon-fit`** – renders the live SSH console
+- **`mpegts.js`** – plays the HTTP-FLV video stream
 
 ## Project Structure
 
@@ -25,23 +24,15 @@ frontend/
 ├── src/
 │   ├── assets/          # Images, fonts, etc.
 │   ├── components/
-│   │   ├── layout/      # Layout wrappers (e.g., ProtectedRoute)
-│   │   ├── molecules/   # Small composed components
-│   │   └── ui/          # Reusable base UI components
-│   ├── config/          # App-level configuration (API URLs, env helpers)
-│   ├── constants/       # Static constants and enums
-│   ├── features/        # Domain-driven modules
-│   ├── hooks/           # Shared custom React hooks
-│   ├── lib/             # Utility libraries / third-party wrappers
-│   ├── pages/           # Top-level route pages
-│   ├── providers/       # Context / global providers (e.g., AppProviders)
-│   ├── router/          # Route definitions
-│   ├── security/        # Security-related utilities
-│   ├── store/           # Zustand global stores
-│   ├── types/           # Shared TypeScript types
-│   ├── utils/           # General helper functions
-│   ├── App.tsx          # Root component
-│   └── main.tsx         # Entry point
+│   │   ├── layout/      # Navbar, RootLayout
+│   │   └── ui/          # shadcn/ui primitives
+│   ├── features/
+│   │   └── pi-control/  # video, console, command buttons — the whole app
+│   ├── lib/              # api-client.ts (Axios), utils.ts (cn helper)
+│   ├── pages/            # DashboardPage
+│   ├── providers/        # AppProviders (TanStack Query)
+│   ├── router/           # Route definitions
+│   └── main.tsx           # Entry point
 ├── index.html
 ├── package.json
 ├── vite.config.ts
@@ -54,14 +45,10 @@ frontend/
 
 - **Pages** that match a route → `src/pages/`
 - **Reusable UI primitives** (buttons, inputs) → `src/components/ui/`
-- **Feature-specific code** (auth forms, cert lists) → `src/features/<feature>/`
+- **Feature-specific code** → `src/features/<feature>/`
   - `components/` – feature-specific React components
   - `hooks/` – feature-specific data hooks
   - `services/` – API calls for that feature
-- **Shared hooks** → `src/hooks/`
-- **Global state (Zustand)** → `src/store/`
-- **Shared types** → `src/types/`
-- **Config & constants** → `src/config/` and `src/constants/`
 - **Route table** → `src/router/`
 - **Providers** → `src/providers/`
 
@@ -78,14 +65,12 @@ Imports use aliases instead of relative paths, configured in `vite.config.ts` an
 | `@pages`      | `src/pages/`         |
 | `@providers`  | `src/providers/`     |
 | `@router`     | `src/router/`        |
-| `@constants`  | `src/constants/`     |
 | `@assets`     | `src/assets/`        |
 | `@icons`      | `src/assets/icons/`  |
 | `@images`     | `src/assets/images/` |
-| `@store`      | `src/store/`         |
 
 ```ts
-import { Button } from "@components/Button";
+import { Button } from "@components/ui/button";
 ```
 
 #### Adding a new alias
@@ -94,34 +79,20 @@ When adding a new top-level folder under `src/`, register it in **both** `vite.c
 
 ## Setup
 
-1. Install dependencies:
+1. From the repo root, copy `.env.example` to `.env` and fill in your Pi's details (see `CLAUDE.md`).
+2. Install dependencies:
 
 ```bash
 npm install
 ```
 
-If you ever need to reinstall the main libraries manually:
-
-```bash
-npm install react-router react-hook-form zod @hookform/resolvers axios @tanstack/react-query zustand class-variance-authority clsx tailwind-merge lucide-react
-```
-
-2. Start the development server:
+3. Start the development server (with `backend/` also running):
 
 ```bash
 npm run dev
 ```
 
-The app will be available at `http://localhost:5173` by default.
-
-## Mock users:
-
-| Username            | Password    |
-| ------------------- | ----------- |
-| `test@example.com`  | password123 |
-| `admin@example.com` | admin123    |
-
-You can find this implementation in [authService.ts](frontend/src/features/auth/services/authService.ts)
+The app runs at the port set by `FRONTEND_URL` in the root `.env` (`http://localhost:5173` by default).
 
 ## Available Scripts
 
@@ -130,4 +101,4 @@ You can find this implementation in [authService.ts](frontend/src/features/auth/
 | `npm run dev`     | Start Vite dev server               |
 | `npm run build`   | Type-check and build for production |
 | `npm run lint`    | Run ESLint                          |
-| `npm run preview` | Preview production build locally    | Stop |
+| `npm run preview` | Preview production build locally    |

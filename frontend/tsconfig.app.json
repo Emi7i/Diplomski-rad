@@ -32,8 +32,7 @@
       "@router/*": ["./src/router/*"],
       "@assets/*": ["./src/assets/*"],
       "@icons/*": ["./src/assets/icons/*"],
-      "@images/*": ["./src/assets/images/*"],
-      "@store/*": ["./src/store/*"]
+      "@images/*": ["./src/assets/images/*"]
     }
   },
   "include": ["src"]
