@@ -1,6 +1,6 @@
 # Frontend
 
-The web UI for the Pi Control Portal — one page showing the Pi's live video feed, a console, and quick-action buttons. Needs the `backend/` service running alongside it (see the root `.env.example` and `CLAUDE.md`).
+The web UI for the Pi Control Portal — one page showing the Pi's live video feed, a console, and quick-action buttons. Needs the `backend/` service running alongside it (see the root `.env.example`).
 
 ## Technologies Used
 

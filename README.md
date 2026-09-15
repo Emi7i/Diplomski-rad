@@ -2,6 +2,9 @@
 
 Prateći alat uz moj diplomski rad na temu snimanja HDMI komunikacije i manipulacije EDID-om. Dok glavni sistem (`set-edid.service` i `hdmi-mirror.service`) radi direktno na Raspberry Pi uređaju i ne zahteva nikakvu interakciju, ovaj web dashboard služi kao praktičan alat za daljinsko praćenje i upravljanje tim sistemom preko LAN mreže — uživo prikaz HDMI signala, pristup konzoli preko SSH-a, i pokretanje/zaustavljanje servisa jednim klikom, bez potrebe za fizičkim pristupom uređaju ili ručnim SSH povezivanjem iz terminala.
 
+<img src="assets/screen_no_connection.jpg" width="600" height="600">
+<img src="assets/screen_connected.jpg" width="600" height="600">
+
 ## Kako je napravljeno
 
 Dva dela, u jednom repozitorijumu:
@@ -9,12 +12,7 @@ Dva dela, u jednom repozitorijumu:
 * `frontend/` — sama stranica: video plejer, konzola, dugmad. Vite + React + TypeScript.
 * `backend/` — manji Node server sa kojim frontend komunicira. Postoji zato što browser sam po sebi ne može da otvori sirovu SSH ili RTMP konekciju — nešto mora da stoji između.
 
-```text
-Browser  <--HTTP/WebSocket-->  backend/  <--SSH-->  Raspberry Pi
-                                   ^
-Raspberry Pi --RTMP (video)-------┘
-
-```
+![dijagram_rasporedjivanja.jpg](assets/dijagram_rasporedjivanja.jpg)
 
 ## Tehnologije na backend-u
 
@@ -103,3 +101,7 @@ Pokreni ove komande iz korena repozitorijuma (`Web portal/`):
 ## Konfiguracija
 
 Sva konfiguracija se nalazi u jednom zajedničkom `.env` fajlu u korenu repozitorijuma. Pogledati `.env.example` za kompletnu listu promenljivih sa komentarima.
+
+## Frontend šablon 
+
+Frontend šablon sam ja napravila i možete ga videti na https://github.com/Emi7i/React-TS-Structure-Template
