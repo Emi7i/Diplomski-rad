@@ -1,13 +1,6 @@
-import { Button, type ButtonProps } from "@components/ui/button";
+import { Button } from "@components/ui/button";
 import { useCommands } from "../hooks/useCommands";
-import type { PiCommandMeta } from "../types";
-
-const toneVariant: Record<PiCommandMeta["tone"], ButtonProps["variant"]> = {
-  positive: "success",
-  negative: "destructive",
-  warning: "warning",
-  neutral: "default",
-};
+import { toneVariant } from "../toneVariant";
 
 interface CommandButtonsProps {
   onRun: (id: string) => void;
@@ -15,10 +8,11 @@ interface CommandButtonsProps {
 
 export default function CommandButtons({ onRun }: CommandButtonsProps) {
   const { data: commands } = useCommands();
+  const mainCommands = commands?.filter((command) => !command.newSession);
 
   return (
     <div className="flex flex-1 flex-wrap items-center gap-3">
-      {commands?.map((command) => (
+      {mainCommands?.map((command) => (
         <Button
           key={command.id}
           variant={toneVariant[command.tone]}

@@ -6,6 +6,7 @@ import "@xterm/xterm/css/xterm.css";
 
 export interface TerminalConsoleHandle {
   write: (text: string) => void;
+  fit: () => void;
 }
 
 interface TerminalConsoleProps {
@@ -17,10 +18,12 @@ const TerminalConsole = forwardRef<TerminalConsoleHandle, TerminalConsoleProps>(
   function TerminalConsole({ onInput }, ref) {
     const containerRef = useRef<HTMLDivElement>(null);
     const termRef = useRef<Terminal | null>(null);
+    const fitAddonRef = useRef<FitAddon | null>(null);
     const [value, setValue] = useState("");
 
     useImperativeHandle(ref, () => ({
       write: (text: string) => termRef.current?.write(text),
+      fit: () => fitAddonRef.current?.fit(),
     }));
 
     useEffect(() => {
@@ -37,6 +40,7 @@ const TerminalConsole = forwardRef<TerminalConsoleHandle, TerminalConsoleProps>(
       term.loadAddon(fitAddon);
       term.open(containerRef.current);
       termRef.current = term;
+      fitAddonRef.current = fitAddon;
 
       const fit = () => fitAddon.fit();
       requestAnimationFrame(fit);
@@ -47,6 +51,7 @@ const TerminalConsole = forwardRef<TerminalConsoleHandle, TerminalConsoleProps>(
         resizeObserver.disconnect();
         term.dispose();
         termRef.current = null;
+        fitAddonRef.current = null;
       };
     }, []);
 

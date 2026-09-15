@@ -4,11 +4,22 @@ import { config } from './config.js';
 
 export type ShellStatus = 'connecting' | 'connected' | 'disconnected';
 
+const MAIN_SESSION_ID = 'main';
+const BUFFER_LIMIT = 20000;
+
+interface Session {
+    id: string;
+    label: string;
+    stream: ClientChannel;
+    buffer: string;
+}
+
 class PiShell extends EventEmitter {
     private conn: Client | null = null;
-    private stream: ClientChannel | null = null;
     private status: ShellStatus = 'disconnected';
     private reconnectTimer: ReturnType<typeof setTimeout> | null = null;
+    private sessions = new Map<string, Session>();
+    private sessionCounter = 0;
 
     start() {
         this.connect();
@@ -34,38 +45,21 @@ class PiShell extends EventEmitter {
         this.conn = conn;
 
         conn.on('ready', () => {
-            console.log('[ssh] connected, opening shell');
-            conn.shell({ term: 'xterm' }, (err, stream) => {
-                if (err) {
-                    console.error(`[ssh] shell error: ${err.message}`);
-                    this.emit('data', `\r\n[ssh] shell error: ${err.message}\r\n`);
-                    conn.end();
-                    return;
-                }
-                this.stream = stream;
-                this.setStatus('connected');
-
-                // sudo prompts go straight through unanswered; the user types the password themselves
-                stream.on('data', (chunk: Buffer) => this.emit('data', chunk.toString('utf8')));
-                stream.stderr.on('data', (chunk: Buffer) =>
-                    this.emit('data', chunk.toString('utf8')),
-                );
-                stream.on('close', () => {
-                    this.stream = null;
-                    conn.end();
-                });
-            });
+            console.log('[ssh] connected');
+            this.setStatus('connected');
+            this.openSession(MAIN_SESSION_ID, 'Session 1');
         });
 
         conn.on('error', (err) => {
             console.error(`[ssh] connection error: ${err.message}`);
-            this.emit('data', `\r\n[ssh] connection error: ${err.message}\r\n`);
         });
 
         conn.on('close', () => {
             console.log('[ssh] connection closed, retrying in 5s');
             this.conn = null;
-            this.stream = null;
+            for (const id of this.sessions.keys()) this.emit('session-closed', id);
+            this.sessions.clear();
+            this.sessionCounter = 0;
             this.setStatus('disconnected');
             this.scheduleReconnect();
         });
@@ -97,12 +91,62 @@ class PiShell extends EventEmitter {
         return this.status;
     }
 
-    write(text: string) {
-        if (this.stream && this.status === 'connected') this.stream.write(text);
+    listSessions() {
+        return [...this.sessions.values()].map(({ id, label, buffer }) => ({ id, label, buffer }));
     }
 
-    runLines(lines: string[]) {
-        this.write(`${lines.join(' && ')}\n`);
+    createSession(label?: string, initialCommand?: string): string {
+        this.sessionCounter += 1;
+        const id = `session-${Date.now()}-${this.sessionCounter}`;
+        this.openSession(id, label ?? `Session ${this.sessionCounter + 1}`, initialCommand);
+        return id;
+    }
+
+    runInNewSession(label: string, lines: string[]): string {
+        return this.createSession(label, lines.join(' && '));
+    }
+
+    private openSession(id: string, label: string, initialCommand?: string) {
+        if (!this.conn || this.status !== 'connected') return;
+        this.conn.shell({ term: 'xterm' }, (err, stream) => {
+            if (err) {
+                console.error(`[ssh] shell error: ${err.message}`);
+                return;
+            }
+            const session: Session = { id, label, stream, buffer: '' };
+            this.sessions.set(id, session);
+            this.emit('session-created', { id, label });
+            if (initialCommand) stream.write(`${initialCommand}\n`);
+
+            const onChunk = (chunk: Buffer) => {
+                const text = chunk.toString('utf8');
+                session.buffer = (session.buffer + text).slice(-BUFFER_LIMIT);
+                this.emit('session-data', id, text);
+            };
+            stream.on('data', onChunk);
+            stream.stderr.on('data', onChunk);
+
+            // 'close' isn't reliable for an interactive pty channel; 'exit' fires once the
+            // remote shell process actually terminates (closeSession, typed `exit`, etc.)
+            const cleanup = () => {
+                if (!this.sessions.delete(id)) return;
+                this.emit('session-closed', id);
+            };
+            stream.on('close', cleanup);
+            stream.on('exit', cleanup);
+        });
+    }
+
+    closeSession(id: string) {
+        this.sessions.get(id)?.stream.close();
+    }
+
+    write(sessionId: string, text: string) {
+        this.sessions.get(sessionId)?.stream.write(text);
+    }
+
+    runLines(sessionId: string, lines: string[]) {
+        this.write(sessionId, `${lines.join(' && ')}\n`);
     }
 }
 

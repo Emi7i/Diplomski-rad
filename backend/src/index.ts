@@ -12,9 +12,9 @@ app.use(cors({ origin: config.server.corsOrigin ?? true }));
 
 app.get('/api/health', (_req, res) => res.json({ ok: true }));
 
-// Frontend only gets id/label/tone; the actual shell commands stay server-side.
+// Frontend only gets id/label/tone/newSession; the actual shell commands stay server-side.
 app.get('/api/commands', (_req, res) => {
-    res.json(commands.map(({ id, label, tone }) => ({ id, label, tone })));
+    res.json(commands.map(({ id, label, tone, newSession }) => ({ id, label, tone, newSession })));
 });
 
 const server = http.createServer(app);
