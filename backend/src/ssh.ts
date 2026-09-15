@@ -102,7 +102,7 @@ class PiShell extends EventEmitter {
     }
 
     runLines(lines: string[]) {
-        for (const line of lines) this.write(`${line}\n`);
+        this.write(`${lines.join(' && ')}\n`);
     }
 }
 
