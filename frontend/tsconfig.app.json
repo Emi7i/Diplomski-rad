@@ -30,7 +30,6 @@
       "@pages/*": ["./src/pages/*"],
       "@providers/*": ["./src/providers/*"],
       "@router/*": ["./src/router/*"],
-      "@constants/*": ["./src/constants/*"],
       "@assets/*": ["./src/assets/*"],
       "@icons/*": ["./src/assets/icons/*"],
       "@images/*": ["./src/assets/images/*"],

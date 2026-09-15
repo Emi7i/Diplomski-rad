@@ -1,6 +1,6 @@
-import {Client, type ClientChannel} from 'ssh2';
-import {EventEmitter} from 'node:events';
-import {config} from './config.js';
+import { Client, type ClientChannel } from 'ssh2';
+import { EventEmitter } from 'node:events';
+import { config } from './config.js';
 
 export type ShellStatus = 'connecting' | 'connected' | 'disconnected';
 
@@ -27,13 +27,15 @@ class PiShell extends EventEmitter {
 
     private connect() {
         this.setStatus('connecting');
-        console.log(`[ssh] connecting to ${config.pi.username}@${config.pi.host}:${config.pi.port}...`);
+        console.log(
+            `[ssh] connecting to ${config.pi.username}@${config.pi.host}:${config.pi.port}...`,
+        );
         const conn = new Client();
         this.conn = conn;
 
         conn.on('ready', () => {
             console.log('[ssh] connected, opening shell');
-            conn.shell({term: 'xterm'}, (err, stream) => {
+            conn.shell({ term: 'xterm' }, (err, stream) => {
                 if (err) {
                     console.error(`[ssh] shell error: ${err.message}`);
                     this.emit('data', `\r\n[ssh] shell error: ${err.message}\r\n`);
@@ -45,7 +47,9 @@ class PiShell extends EventEmitter {
 
                 // sudo prompts go straight through unanswered; the user types the password themselves
                 stream.on('data', (chunk: Buffer) => this.emit('data', chunk.toString('utf8')));
-                stream.stderr.on('data', (chunk: Buffer) => this.emit('data', chunk.toString('utf8')));
+                stream.stderr.on('data', (chunk: Buffer) =>
+                    this.emit('data', chunk.toString('utf8')),
+                );
                 stream.on('close', () => {
                     this.stream = null;
                     conn.end();

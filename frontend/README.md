@@ -65,34 +65,32 @@ frontend/
 - **Route table** → `src/router/`
 - **Providers** → `src/providers/`
 
-
 ### Path Aliases
 
 Imports use aliases instead of relative paths, configured in `vite.config.ts` and `tsconfig.app.json`.
 
-| Alias         | Points to         |
-|---------------|-------------------|
-| `@`           | `src/`            |
-| `@lib`        | `src/lib/`        |
-| `@components` | `src/components/` |
-| `@features`   | `src/features/`   |
-| `@pages`      | `src/pages/`      |
-| `@providers`  | `src/providers/`  |
-| `@router`     | `src/router/`     |
-| `@constants`  | `src/constants/`  |
-| `@assets`     | `src/assets/`     |
-| `@icons`      | `src/assets/icons/` |
+| Alias         | Points to            |
+| ------------- | -------------------- |
+| `@`           | `src/`               |
+| `@lib`        | `src/lib/`           |
+| `@components` | `src/components/`    |
+| `@features`   | `src/features/`      |
+| `@pages`      | `src/pages/`         |
+| `@providers`  | `src/providers/`     |
+| `@router`     | `src/router/`        |
+| `@constants`  | `src/constants/`     |
+| `@assets`     | `src/assets/`        |
+| `@icons`      | `src/assets/icons/`  |
 | `@images`     | `src/assets/images/` |
-| `@store`      | `src/store/`      |
+| `@store`      | `src/store/`         |
 
 ```ts
-import { Button } from '@components/Button'
+import { Button } from "@components/Button";
 ```
 
 #### Adding a new alias
 
 When adding a new top-level folder under `src/`, register it in **both** `vite.config.ts` and `tsconfig.app.json` files, then restart the dev server / TS server.
-
 
 ## Setup
 
@@ -118,18 +116,18 @@ The app will be available at `http://localhost:5173` by default.
 
 ## Mock users:
 
-| Username             | Password      |
-|----------------------|---------------|
-| `test@example.com`   | password123   |
-| `admin@example.com`  | admin123      |
+| Username            | Password    |
+| ------------------- | ----------- |
+| `test@example.com`  | password123 |
+| `admin@example.com` | admin123    |
 
 You can find this implementation in [authService.ts](frontend/src/features/auth/services/authService.ts)
 
 ## Available Scripts
 
-| Command        | Description                        |
-|----------------|------------------------------------|
-| `npm run dev`  | Start Vite dev server              |
-| `npm run build`| Type-check and build for production|
-| `npm run lint` | Run ESLint                         |
-| `npm run preview` | Preview production build locally |Stop 
+| Command           | Description                         |
+| ----------------- | ----------------------------------- |
+| `npm run dev`     | Start Vite dev server               |
+| `npm run build`   | Type-check and build for production |
+| `npm run lint`    | Run ESLint                          |
+| `npm run preview` | Preview production build locally    | Stop |

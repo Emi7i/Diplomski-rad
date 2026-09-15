@@ -6,13 +6,23 @@ import CommandButtons from "./CommandButtons";
 import TerminalConsole, { type TerminalConsoleHandle } from "./TerminalConsole";
 import { usePiSocket } from "../hooks/usePiSocket";
 
-const statusLabel = { connecting: "Connecting…", connected: "Connected", disconnected: "Disconnected" } as const;
-const statusColor = { connecting: "bg-yellow-500", connected: "bg-green-500", disconnected: "bg-red-500" } as const;
+const statusLabel = {
+  connecting: "Connecting…",
+  connected: "Connected",
+  disconnected: "Disconnected",
+} as const;
+const statusColor = {
+  connecting: "bg-yellow-500",
+  connected: "bg-green-500",
+  disconnected: "bg-red-500",
+} as const;
 
 export default function PiControl() {
   const consoleRef = useRef<TerminalConsoleHandle>(null);
   const onConsoleData = useCallback((text: string) => consoleRef.current?.write(text), []);
-  const { sshStatus, videoStatus, sendInput, sendCommand, sendReconnect } = usePiSocket({ onConsoleData });
+  const { sshStatus, videoStatus, sendInput, sendCommand, sendReconnect } = usePiSocket({
+    onConsoleData,
+  });
   const [pulse, setPulse] = useState(0);
 
   return (

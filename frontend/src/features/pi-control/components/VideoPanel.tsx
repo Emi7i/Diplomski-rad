@@ -3,7 +3,7 @@ import mpegts from "mpegts.js";
 import type { VideoStatus } from "../types";
 
 const MEDIA_URL = import.meta.env.VITE_MEDIA_URL || "http://localhost:8000";
-const STREAM_PATH = import.meta.env.VITE_STREAM_PATH || "live/pi";
+const STREAM_PATH = import.meta.env.VITE_STREAM_PATH || "live/hdmi";
 
 interface VideoPanelProps {
   status: VideoStatus;
@@ -15,7 +15,11 @@ export default function VideoPanel({ status }: VideoPanelProps) {
   useEffect(() => {
     if (status !== "live" || !videoRef.current || !mpegts.getFeatureList().mseLivePlayback) return;
 
-    const player = mpegts.createPlayer({ type: "flv", isLive: true, url: `${MEDIA_URL}/${STREAM_PATH}.flv` });
+    const player = mpegts.createPlayer({
+      type: "flv",
+      isLive: true,
+      url: `${MEDIA_URL}/${STREAM_PATH}.flv`,
+    });
     player.attachMediaElement(videoRef.current);
     player.load();
     Promise.resolve(player.play()).catch(() => {});
@@ -24,7 +28,7 @@ export default function VideoPanel({ status }: VideoPanelProps) {
   }, [status]);
 
   return (
-    <div className="relative aspect-video w-full max-w-md overflow-hidden rounded-md border border-(--border) bg-black">
+    <div className="relative aspect-video w-full max-w-xl overflow-hidden rounded-md border border-(--border) bg-black">
       {/* muted: browsers block unmuted autoplay, and this feed has no audio track anyway */}
       <video ref={videoRef} className="h-full w-full" muted playsInline />
       {status === "live" ? (
@@ -33,7 +37,9 @@ export default function VideoPanel({ status }: VideoPanelProps) {
           LIVE
         </div>
       ) : (
-        <div className="absolute inset-0 flex items-center justify-center text-sm text-neutral-400">No signal</div>
+        <div className="absolute inset-0 flex items-center justify-center text-sm text-neutral-400">
+          No signal
+        </div>
       )}
     </div>
   );

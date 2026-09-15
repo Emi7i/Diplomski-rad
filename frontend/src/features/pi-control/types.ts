@@ -4,6 +4,5 @@ export type VideoStatus = "live" | "offline";
 export interface PiCommandMeta {
   id: string;
   label: string;
-  destructive: boolean;
-  tone: "positive" | "negative" | "neutral";
+  tone: "positive" | "negative" | "warning" | "neutral";
 }

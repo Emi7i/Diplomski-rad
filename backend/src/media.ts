@@ -1,6 +1,6 @@
 import NodeMediaServer from 'node-media-server';
-import {EventEmitter} from 'node:events';
-import {config} from './config.js';
+import { EventEmitter } from 'node:events';
+import { config } from './config.js';
 
 export const videoEvents = new EventEmitter();
 
@@ -13,9 +13,9 @@ export function startMediaServer() {
             chunk_size: 60000,
             gop_cache: true,
             ping: 30,
-            ping_timeout: 60
+            ping_timeout: 60,
         },
-        http: {port: config.media.httpPort, allow_origin: '*'},
+        http: { port: config.media.httpPort, allow_origin: '*' },
     });
 
     nms.on('postPublish', (_id: string, path: string) => {
